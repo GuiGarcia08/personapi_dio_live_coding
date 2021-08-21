@@ -17,7 +17,7 @@ public class PersonService {
     @Autowired
     PersonRepository repository;
 
-    private final PersonMapper personMapper = PersonMapper.INSTANCE;
+    private static final PersonMapper personMapper = PersonMapper.INSTANCE;
 
     public MessageResponseDTO cretePerson(PersonDTO personDTO) {
         Person personToSave = personMapper.toModel(personDTO);
@@ -37,8 +37,18 @@ public class PersonService {
     }
 
     public PersonDTO findById(Long id) throws PersonNotFoundException {
-        Person person = repository.findById(id)
-                .orElseThrow(() -> new PersonNotFoundException(id));
+        Person person = verifyIfExists(id);
         return personMapper.toDTO(person);
     }
+
+    public void delete(Long id) throws PersonNotFoundException{
+        verifyIfExists(id);
+        repository.deleteById(id);
+    }
+
+    private Person verifyIfExists(Long id) throws PersonNotFoundException {
+        return repository.findById(id)
+                .orElseThrow(() -> new PersonNotFoundException(id));
+    }
+
 }
