@@ -5,7 +5,7 @@ import one.digitalinnovation.personapi.dto.request.PersonDTO;
 import one.digitalinnovation.personapi.dto.response.MessageResponseDTO;
 import one.digitalinnovation.personapi.entity.Person;
 import one.digitalinnovation.personapi.exception.PersonNotFoundException;
-import one.digitalinnovation.personapi.mapper.PersonMapper;
+import one.digitalinnovation.personapi.dto.mapper.PersonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,8 @@ public class PersonService {
     @Autowired
     PersonRepository repository;
 
-    private static final PersonMapper personMapper = PersonMapper.INSTANCE;
+    @Autowired
+    PersonMapper personMapper;
 
     public MessageResponseDTO cretePerson(PersonDTO personDTO) {
         Person personToSave = personMapper.toModel(personDTO);
